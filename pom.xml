@@ -62,11 +62,18 @@
 			<version>3.0.4</version>
 			<scope>test</scope>
 		</dependency>
-							    <!-- tomcat embed server 용 jsp parser -->
+		<!-- tomcat embed server 용 jsp parser -->
 		<dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
+        
+        <!-- gson -->
+        <dependency>
+	    	<groupId>com.google.code.gson</groupId>
+	   	 	<artifactId>gson</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
