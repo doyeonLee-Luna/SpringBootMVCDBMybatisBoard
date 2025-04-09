@@ -28,5 +28,28 @@
 	<select id="listBoardSearchWordTotalCount" parameterType="com.mycom.myapp.board.dto.BoardParamDto" >
 		select count(*) from board where title like concat('%', #{searchWord}, '%');
 	</select>
+	
+	<select id="detailBoard" parameterType="int" resultType="com.mycom.myapp.board.dto.BoardDto">
+		select b.board_id, b.user_seq, u.user_name, u.user_profile_image, b.title, b.content, b.reg_dt, b.read_count 
+	 		from board b, users u
+			where b.board_id = #{boardId}
+				and b.user_seq = u.user_seq;
+	</select>
+	
+	<insert id="insertBoard" parameterType="com.mycom.myapp.board.dto.BoardDto">
+		insert into board ( user_seq, title, content, reg_dt, read_count )
+					values( #{userSeq}, #{title}, #{content}, now(), 0 );
+	</insert>
+	
+	<update id="updateBoard" parameterType="com.mycom.myapp.board.dto.BoardDto">
+		update board
+			set title = #{title},
+				content = #{content}
+			where board_id = #{boardId};
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from board where board_id = #{boardId};
+	</delete>
 
 </mapper>  

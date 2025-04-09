@@ -60,4 +60,93 @@ public class BoardServiceImpl implements BoardService{
 		return boardResultDto;
 	}
 
+	// 게시글 상세 정보 + 조회수 처리 
+	@Override
+	public BoardResultDto detailBoard(BoardParamDto boardParamDto) {
+		BoardResultDto boardResultDto = new BoardResultDto();
+		
+		try {
+			
+			// 조회수 처리
+			
+			//게시글 상세 정보
+	
+			BoardDto boardDto = boardDao.detailBoard(boardParamDto);
+			// sameUser 	
+			if( boardDto.getUserSeq() == boardParamDto.getUserSeq() ) {
+				boardDto.setSameUser(true);
+			} else {
+				boardDto.setSameUser(false);
+			}
+			
+			boardResultDto.setDto(boardDto);
+			boardResultDto.setResult("success");
+		} catch(Exception e ) {
+			e.printStackTrace();
+			boardResultDto.setResult("fail");
+		}
+		
+		return boardResultDto;
+	
+
+	}
+
+	@Override
+	public BoardResultDto insertBoard(BoardDto boardDto) {
+		BoardResultDto boardResultDto = new BoardResultDto();
+		
+		try {
+			int ret = boardDao.insertBoard(boardDto);
+			
+			if( ret == 1 ) { boardResultDto.setResult("success"); }
+			else boardResultDto.setResult("fail");
+				
+			
+		} catch(Exception e ) {
+			e.printStackTrace();
+			boardResultDto.setResult("fail");		
+		}
+		
+		return boardResultDto;
+	
+	}
+
+	@Override
+	public BoardResultDto updateBoard(BoardDto boardDto) {
+		BoardResultDto boardResultDto = new BoardResultDto();
+		
+		try {
+			int ret = boardDao.updateBoard(boardDto);
+			
+			if( ret == 1 ) { boardResultDto.setResult("success"); }
+			else boardResultDto.setResult("fail");
+				
+			
+		} catch(Exception e ) {
+			e.printStackTrace();
+			boardResultDto.setResult("fail");		
+		}
+		
+		return boardResultDto;
+	}
+
+	@Override
+	public BoardResultDto deleteBoard(int boardId) {
+		BoardResultDto boardResultDto = new BoardResultDto();
+		
+		try {
+			int ret = boardDao.deleteBoard(boardId);
+			
+			if( ret == 1 ) { boardResultDto.setResult("success"); }
+			else boardResultDto.setResult("fail");
+				
+			
+		} catch(Exception e ) {
+			e.printStackTrace();
+			boardResultDto.setResult("fail");		
+		}
+		
+		return boardResultDto;
+	}
+
 }
