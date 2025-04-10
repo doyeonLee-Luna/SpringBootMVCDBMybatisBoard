@@ -65,6 +65,8 @@
       </tbody>
     </table>  
     
+    <div id="paginationWrapper"></div>
+    
     <button type="button" id="btnInsertPage" class="btn btn-sm btn-primary">글쓰기</button>
 </div>    
 <div class="modal" tabindex="-1" id="detailBoardModal">
@@ -158,6 +160,9 @@
     	let SEARCH_WORD = ''; // searchWord
     	let TOTAL_LIST_COUNT = 0; // 조회된 건수
     	
+    	let PAGE_LINK_COUNT = 10; // 페이지에 보여줄 pagination button 개수
+    	let CURRENT_PAGE_INDEX = 1; // pagination button 중 현재 page button 번호 
+    	
     	window.onload = function(){
 			// 글 목록
 			listBoard();
@@ -234,11 +239,17 @@
 			if(data.result == "success"){
 				makeListHtml(data.list)
 				TOTAL_LIST_COUNT = data.count;
-			}else if(data.result == "fail"){
+				addPagination();
+			}else if(data.result == "fail"){ // 네트워크 장애, 일시적, filter 로부터의 거부 
 				alert("글 조회과정에서 오류 발생");
 			}else if(data.result == "login"){
 				window.location.href = "/pages/login";
+			}else if(data.result == "exception"){ // 비즈니스 로직을 처리하는 상황 에서 발생 
+				alert("글 조회 과정에서 예외 발생");
 			}
+			
+			// 위 fail, exception 을 하나로 아니면 위처럼 분리 하여 처리하는 방식도 있따. 
+			else if (data.result == "fail" || data.result =="exception"){}
 		}
 		
 		function makeListHtml(list){
@@ -272,6 +283,18 @@
 		                detailBoard(boardId);
 		            }
 		        } );
+		}
+		
+		function addPagination(){
+			// Pagination 은 여러 화면에서 함께 사용될 수 있는 공통 컴포넌트
+			// 한 곳에 만들어 두고 여러 화면에서 사영하면 된다. =? utuil.js 에서 만든다 그 후, 가져다 쓴다.
+			makePaginationHtml(LIST_ROW_COUNT, PAGE_LINK_COUNT, CURRENT_PAGE_INDEX, TOTAL_LIST_COUNT, "paginationWrapper")
+		}
+		
+		function movePage(pageIndex){
+			OFFSET = (pageIndex - 1) * LIST_ROW_COUNT;
+			CURRENT_PAGE_INDEX = pageIndex;
+			listBoard();
 		}
 		
 		async function detailBoard(boardId){

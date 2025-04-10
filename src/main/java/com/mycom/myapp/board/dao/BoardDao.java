@@ -23,4 +23,12 @@ public interface BoardDao {
 	int insertBoard(BoardDto boardDto);
 	int updateBoard(BoardDto boardDto);
 	int deleteBoard(int boardId);
+	
+	// 상세 - 조회수 처리 부분
+	// 현재 사용자가 현재 게시글을 읽었는지 판단하는 것이 필요하다 
+	int countBoardUserRead(BoardParamDto boardParamDto); // boardId, userSeq
+	// 현재 사용자가 현재 게시글을 읽었다는 표시 추가
+	int insertBoardUserRead(BoardParamDto boardParamDto); // boardId, userSeq 를 받아서 처리한다
+	// 현재 게시글의 조회수 증가
+	int updateBoardReadCount(int boardId);
 }
